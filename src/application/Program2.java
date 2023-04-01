@@ -54,5 +54,14 @@ public class Program2 {
                 System.out.println("Operation aborted.");
             }
         }
+        
+        System.out.println();
+        System.out.println(">>>>>> TEST 4: department update <<<<<<");
+        dep = depDao.findById(4);
+        dep.setName("E-Books");
+        depDao.update(dep);
+        System.out.println("Update completed");
+        
+        
     }
 }
