@@ -4,10 +4,13 @@
  */
 package model.dao.impl;
 
+import db.DB;
+import db.DbException;
 import java.util.List;
 import model.dao.DepartmentDao;
 import model.entities.Department;
 import java.sql.*;
+import java.util.ArrayList;
 
 /**
  *
@@ -43,7 +46,27 @@ public class DepartmentDaoJDBC implements DepartmentDao {
 
     @Override
     public List<Department> findAll() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try {
+            st = conn.prepareStatement("SELECT * FROM department");
+            rs = st.executeQuery();
+            List<Department> list = new ArrayList<>();
+            while (rs.next()) {
+                Department dept = new Department();
+                dept.setId(rs.getInt("id"));
+                dept.setName(rs.getString("name"));
+                list.add(dept);
+            }
+            return list;
+
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        } finally {
+            DB.closeResultSet(rs);
+            DB.closeStatement(st);
+        }
+
     }
 
 }
