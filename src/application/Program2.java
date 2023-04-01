@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Scanner;
 import model.dao.DaoFactory;
 import model.dao.DepartmentDao;
+import model.dao.SellerDao;
 import model.entities.Department;
 
 /**
@@ -34,7 +35,24 @@ public class Program2 {
         System.out.println(">>>>>> TEST 3: department delete <<<<<<");
         System.out.print("Enter id for delete test: ");
         int id = sc.nextInt();
-        depDao.deleteById(id);
-        System.out.println("Delete completed");
+
+        List<Integer> sellerInDep = depDao.sellersIdInDepartment(id);
+        if (sellerInDep.isEmpty()) {
+            depDao.deleteById(id);
+            System.out.println("Delete completed");
+        } else {
+            System.out.print("This Department has linked sellers, \ndo you want to exclude them as well? (y/n) ");
+            sc.nextLine();
+            char choice = sc.nextLine().toUpperCase().charAt(0);
+            if (choice == 'Y') {
+                SellerDao sellerDao = DaoFactory.createSellerDao();
+                sellerInDep.forEach(sellerDao::deleteById);
+                System.out.println("Sellers deleted...");
+                depDao.deleteById(id);
+                System.out.println("Delete completed");
+            }else{
+                System.out.println("Operation aborted.");
+            }
+        }
     }
 }

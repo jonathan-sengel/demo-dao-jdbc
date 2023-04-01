@@ -101,4 +101,29 @@ public class DepartmentDaoJDBC implements DepartmentDao {
         dept.setName(rs.getString("name"));
         return dept;
     }
+
+    @Override
+    public List<Integer> sellersIdInDepartment(Integer departmentId) {
+
+        PreparedStatement st = null;
+        ResultSet rs = null;
+
+        try {
+            st = conn.prepareStatement("SELECT id FROM seller WHERE department_id = ?");
+            st.setInt(1, departmentId);
+            rs = st.executeQuery();
+            List<Integer> list = new ArrayList<>();
+            while (rs.next()) {
+                list.add(rs.getInt("id"));
+            }
+            return list;
+
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        } finally {
+            DB.closeResultSet(rs);
+            DB.closeStatement(st);
+        }
+
+    }
 }
