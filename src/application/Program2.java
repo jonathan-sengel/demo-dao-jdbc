@@ -63,5 +63,12 @@ public class Program2 {
         System.out.println("Update completed");
         
         
+        System.out.println();
+        System.out.println(">>>>>> TEST 5: department insert <<<<<<");
+        Department newDep = new Department(null, "Urbanização");
+        depDao.insert(newDep);
+        System.out.println("Inserted. New id = " + newDep.getId());
+        
+        
     }
 }
