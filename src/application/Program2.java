@@ -20,7 +20,13 @@ public class Program2 {
         DepartmentDao depDao = DaoFactory.createDepartmentDao();
         
         System.out.println(">>>>>> TEST 1: department findAll <<<<<<");
-        List<Department> dep = depDao.findAll();
-        dep.forEach(System.out::println);
+        List<Department> list = depDao.findAll();
+        list.forEach(System.out::println);
+        System.out.println("total rows: " + list.size());
+        
+        System.out.println();
+        System.out.println(">>>>>> TEST 2: department findById <<<<<<");
+        Department dep = depDao.findById(4);
+        System.out.println(dep);
     }
 }
